@@ -1,7 +1,8 @@
 import cv2
 import dlib
 from scipy.spatial import distance
-
+from playsound import playsound
+flag=0
 
 cap = cv2.VideoCapture(0)
 
@@ -22,6 +23,9 @@ def Detect_Eye(eye):
 	poi_C = distance.euclidean(eye[0], eye[3])
 	aspect_ratio_Eye = (poi_A+poi_B)/(2*poi_C)
 	return aspect_ratio_Eye
+
+
+
 
 
 # MAIN LOOP IT WILL RUN ALL THE UNLESS AND
@@ -78,6 +82,13 @@ with open('data.txt','w+') as f:
                 f.write(" SLEEPY")
             f.write('\n')
             if Eye_Rat < 0.25:
+                if flag==0:
+                    playsound('beep.wav')
+                    flag+=1
+                if flag==6:
+                    flag=0
+                else:
+                    flag+=1
                 cv2.putText(frame, "DROWSINESS DETECTED", (50, 100),
                         cv2.FONT_HERSHEY_PLAIN, 2, (21, 56, 210), 3)
                 cv2.putText(frame, "Alert!!!!", (50, 450),
